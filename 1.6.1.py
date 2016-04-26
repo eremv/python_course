@@ -16,33 +16,77 @@ def read():
         st = input().split()
         requests.append(st)
 
-def is_parent(parent, child):
-    print('Looking for ', parent,' is parent of ',child)
-    print('Strict parents of ',child,' are : ', rules[child])
-    if rules[child]==[]: 
-        print('empty array for rules[child] = ', rules[child])
-        return 'No'
-    if parent == child: 
-        print('parent is child')
-        return 'Yes'
-    elif parent in rules[child]:
-        print('parent', parent, ' is in ', rules[child])
-        return 'Yes'
-    else:
-        print('enter the recursia')
-        for p in rules[child]:
-            print(' check is parent for child = ', p , ' ,parent = ', parent)
-            is_parent(parent, p)
+
+def find_path(graph, start, end, path=[]):
+    path = path + [start]
+    if start == end:
+        return path
+    if start not in graph.keys():
+        return None
+    for node in graph[start]:
+        if node not in path:
+            newpath = find_path(graph, node, end, path)
+            if newpath: return newpath
+    return None
+
 
 def process():
     read()
     for r in requests:
-        print( is_parent(r[0], r[1]) )
+        res = find_path(rules, r[1], r[0])
+        if find_path(rules, r[1], r[0]) == None :
+            print('No')
+        else:
+            print('Yes')
 
 process()
-3
-A
-B : A
-C : B
-1
-A C
+10
+classA : classB classC classD classG classH
+classB : classC classE classG classH classK classL
+classC : classE classD classH classK classL
+classE : classD classF classK classL
+classD : classG classH
+classF : classK
+classG : classF
+classH : classL
+classK : classH classL
+classL
+38
+classK classD
+classD classA
+classG classD
+classH classA
+classE classE
+classH classG
+classE classL
+classB classD
+classD classL
+classD classG
+classD classE
+classA classF
+classA classC
+classK classA
+classA classH
+classK classD
+classH classB
+classK classB
+classD classL
+classG classG
+classA classH
+classK classL
+classG classE
+classB classA
+classC classK
+classK classL
+classC classL
+classG classC
+classD classD
+classC classG
+classE classA
+classF classK
+classB classG
+classH classL
+classL classF
+classH classG
+classD classA
+classH classL
